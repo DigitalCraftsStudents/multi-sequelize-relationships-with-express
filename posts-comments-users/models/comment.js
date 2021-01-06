@@ -21,16 +21,6 @@ module.exports = (sequelize, DataTypes) => {
   };
   Comment.init({
     content: DataTypes.STRING,
-      postId: {
-          type: DataTypes.INTEGER,
-          references: 'Post',
-          key: 'id'
-      },
-      userId: {
-          type: DataTypes.INTEGER,
-          references: 'User',
-          key: 'id'
-      }
   }, {
     sequelize,
     modelName: 'Comment',
