@@ -26,16 +26,38 @@ app.use(logger);
 app.use(express.urlencoded({extended: true}));
 
 app.get('/list', async (req, res) => {
-    const posts = await Post.findAll({
-        include: [{
-            model: Comment,
-            attributes: ['content'],
-            include: User
-        }],
+    let posts = await Post.findAll({
+        // include: [{
+            // model: Comment,
+            // attributes: ['content'],
+            // include: User
+        // }],
         order: [
             ['id', 'ASC']
         ]
     });
+
+    // cheating because `include` doesn't do what I expect
+    for (let p of posts) {
+        p.Comments = await Comment.findAll({
+            where: {
+                postId: p.id
+            },
+            order: [
+                ['createdAt', 'asc']
+            ]
+        });
+
+        for (let c of p.Comments) {
+            c.User = await User.findOne({
+                where: {
+                    id: c.userId
+                }
+            });
+        }
+    }
+    
+    
     // print one
     console.log(JSON.stringify(posts[0]));
     res.render('list', {
