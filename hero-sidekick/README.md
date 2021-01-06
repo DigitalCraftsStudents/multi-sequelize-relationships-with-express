@@ -1,5 +1,16 @@
 # Hero & Sidekicks
 
+This is an example of a "one to one" relationship.
+
+## Qeustions
+
+### How do I know which model to put the foreign key on?
+
+Ask yourself: which side of the relationship is standalone? Which side is dependent on the other?
+
+In this example, the Sidekick is dependent on the Hero.
+Therefore, the Sidekick will have a foreign key to Hero.
+
 ## Generating the models
 
 ```sh
@@ -10,6 +21,10 @@ npx sequelize model:generate --name Sidekick --attributes name:string,heroId:int
 ## Setting the FK
 
 ### `models/sidekick.js`
+
+Tell Sequelize more about that `heroId` field.
+
+It's not just an integer, it's an integer that points to a specific Hero in the Hero table.
 
 ```js
   Sidekick.init({
@@ -31,13 +46,24 @@ npx sequelize model:generate --name Sidekick --attributes name:string,heroId:int
 
 ### `models/hero.js`
 
-```
+Hero declares that they can have one Sidekick.
+Their Sidekick will point to them using the Sidekick's `heroId`.
+
+```js
     static associate(models) {
         // define association here
         Hero.hasOne(models.Sidekick, {
             foreignKey: 'heroId'
         });
     }
+```
+
+When you call `Hero.hasOne(models.Sidekick)`, you get these three magic methods on a Hero:
+
+```js
+hero.getSidekick()
+hero.setSidekick()
+hero.createSidekick()
 ```
 
 ### `models/sidekick.js`
@@ -51,6 +77,15 @@ npx sequelize model:generate --name Sidekick --attributes name:string,heroId:int
     }
 ```
 
+When you call `Sidekick.belongsTo(models.Hero)`, you get these three magic methods on a Sidekick:
+
+```js
+sidekick.getHero()
+sidekick.setHero()
+sidekick.createHero()
+```
+
+
 ## Running the migration
 
 ```sh
@@ -59,10 +94,16 @@ npx sequelize db:migrate
 
 ## Setting a Hero's Sidekick
 
+This is the code that appears when processing a form
+that sets a Hero's Sidekick:
+
 ```js
+    const { id } = req.params;
+    const { sidekickId } = req.body;
     const hero = await Hero.findByPk(id);
     const sidekick = await Sidekick.findByPk(sidekickId);
-
+    // use the "magic method" to associate the specific
+    // Hero with the specific Sidekick:
     await hero.setSidekick(sidekick);
     await hero.save(); // save changes to the database
 ```
@@ -125,4 +166,4 @@ Or:
   });
 ```
 
-## 
+
