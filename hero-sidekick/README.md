@@ -57,6 +57,58 @@ npx sequelize model:generate --name Sidekick --attributes name:string,heroId:int
 npx sequelize db:migrate
 ```
 
+## Setting a Hero's Sidekick
+
+```js
+    const hero = await Hero.findByPk(id);
+    const sidekick = await Sidekick.findByPk(sidekickId);
+
+    await hero.setSidekick(sidekick);
+    await hero.save(); // save changes to the database
+```
+
+### Alternatively, use the IDs directly
+
+Either of these will work:
+
+```js
+    const { id } = req.params; // the hero id
+    const { sidekickId } = req.body;
+    const hero = await Hero.findByPk(id);
+    await hero.setSidekick(sidekickId);
+    await hero.save(); // save changes to the database
+```
+
+Or:
+
+```js
+    const { id } = req.params; // the hero id
+    const { sidekickId } = req.body;
+    const sidekick = await Sidekick.findByPk(sidekickId);
+    await sidekick.setHero(id);
+    await sidekick.save(); // save changes to the database
+```
+
+## Loading a Hero, including their Sidekick
+
+### One hero
+
+```js
+    const hero = await Hero.findByPk(1, {
+        include: Sidekick,
+    });
+```
+
+
+### All heroes
+
+```js
+    const heroes = await Hero.findAll({
+        include: Sidekick,
+    });
+```
+
+
 
 ## (Optional) Customizing the model name
 

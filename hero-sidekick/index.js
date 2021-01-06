@@ -32,6 +32,7 @@ app.get('/list', async (req, res) => {
             ['id', 'ASC']
         ]
     });
+    // print one
     console.log(JSON.stringify(heroes[0]));
     res.render('list', {
         locals: {
@@ -45,7 +46,11 @@ app.get('/list', async (req, res) => {
 app.get('/hero/:id', async (req, res) => {
     const { id } = req.params;
     const hero = await Hero.findByPk(id);
-    const sidekicks = await Sidekick.findAll();
+    const sidekicks = await Sidekick.findAll({
+        order: [
+            ['name', 'asc']
+        ]
+    });
     res.render('add-sidekick', {
         locals: {
             hero,
@@ -61,7 +66,8 @@ app.post('/hero/:id', async (req, res) => {
     const hero = await Hero.findByPk(id);
     const sidekick = await Sidekick.findByPk(sidekickId);
 
-    hero.setSidekick(sidekick);
+    await hero.setSidekick(sidekick);
+    await hero.save();
     res.redirect('/list');
 });
 
