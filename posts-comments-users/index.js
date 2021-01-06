@@ -41,20 +41,21 @@ app.get('/list', async (req, res) => {
     for (let p of posts) {
         p.Comments = await Comment.findAll({
             where: {
-                postId: p.id
+                postId: p.id,
             },
+            include: User,            
             order: [
                 ['createdAt', 'asc']
             ]
         });
 
-        for (let c of p.Comments) {
-            c.User = await User.findOne({
-                where: {
-                    id: c.userId
-                }
-            });
-        }
+        // for (let c of p.Comments) {
+            // c.User = await User.findOne({
+                // where: {
+                    // id: c.userId
+                // }
+            // });
+        // }
     }
     
     
