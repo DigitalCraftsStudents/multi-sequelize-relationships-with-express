@@ -1,3 +1,9 @@
+Alternate versions on other branches:
+
+- [No images, but additional tweaks from demo](https://github.com/DigitalCraftsStudents/multi-sequelize-relationships-with-express/tree/demo-tweaks/posts-comments-users)
+- [With Image Upload](https://github.com/DigitalCraftsStudents/multi-sequelize-relationships-with-express/tree/image-upload/posts-comments-users#adding-image-upload)
+
+
 # Posts, Comments, Users
 
 Users and Posts stand on their own (they don't have a direct relationship).
