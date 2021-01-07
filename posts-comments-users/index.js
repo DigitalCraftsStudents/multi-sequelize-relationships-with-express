@@ -27,13 +27,14 @@ app.use(express.urlencoded({extended: true}));
 
 app.get('/list', async (req, res) => {
     let posts = await Post.findAll({
+        // This works, only because I removed the `belongsToMany()` calls
         include: [{
             model: Comment,
             attributes: ['content'],
             include: User
         }],
         order: [
-            ['id', 'ASC']
+            ['createdAt', 'desc']
         ]
     });
 
@@ -67,6 +68,26 @@ app.get('/list', async (req, res) => {
         ...layout
     })
 });
+
+app.get('/post/new', async (req, res) => {
+    res.render('add-post', {
+        locals: {
+            
+        },
+        ...layout
+    })
+});
+
+app.post('/post/new', async (req, res) => {
+    const { userId, content, title } = req.body;
+    const post = await Post.create({
+        title,
+        content
+    });
+    // Not tracking which user created the post.
+    // In a real app, we would.
+    res.redirect('/list') ;
+})
 
 app.get('/post/:id/comment', async (req, res) => {
     const { id } = req.params;

@@ -18,6 +18,7 @@ But while experimenting, calling this breaks Comment's magic methods.
             // through: models.Comment,
             // foreignKey: 'postId'
         // });
+
         Post.hasMany(models.Comment, {
             foreignKey: 'postId'
         });
