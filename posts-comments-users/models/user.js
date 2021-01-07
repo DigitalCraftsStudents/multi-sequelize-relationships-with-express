@@ -10,11 +10,11 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-        // define association here
-        User.belongsToMany(models.Post, {
-            through: 'Comment',
-            foreignKey: 'userId'
-        });
+// See note in post.js about why this is commented out.
+        // User.belongsToMany(models.Post, {
+            // through: models.Comment,
+            // foreignKey: 'userId'
+        // });
         User.hasMany(models.Comment, {
             foreignKey: 'userId'
         });

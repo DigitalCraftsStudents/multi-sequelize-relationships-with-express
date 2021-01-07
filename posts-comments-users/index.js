@@ -27,40 +27,39 @@ app.use(express.urlencoded({extended: true}));
 
 app.get('/list', async (req, res) => {
     let posts = await Post.findAll({
-        // include: [{
-            // model: Comment,
-            // attributes: ['content'],
-            // include: User
-        // }],
+        include: [{
+            model: Comment,
+            attributes: ['content'],
+            include: User
+        }],
         order: [
             ['id', 'ASC']
         ]
     });
 
     // cheating because `include` doesn't do what I expect
-    for (let p of posts) {
-        p.Comments = await Comment.findAll({
-            where: {
-                postId: p.id,
-            },
-            include: User,            
-            order: [
-                ['createdAt', 'asc']
-            ]
-        });
+    // for (let p of posts) {
+        // p.Comments = await Comment.findAll({
+            // where: {
+                // postId: p.id,
+            // },
+            // include: User,            
+            // order: [
+                // ['createdAt', 'asc']
+            // ]
+        // });
 
+        // This doesn't work, magic method returns null
         // for (let c of p.Comments) {
-            // c.User = await User.findOne({
-                // where: {
-                    // id: c.userId
-                // }
-            // });
+            // console.log('attaching user to comment...');            
+            // c.User = await c.getUser();
+            // console.log(JSON.stringify(c.User, null, 4));
         // }
-    }
+    // }
     
     
     // print one
-    console.log(JSON.stringify(posts[0]));
+    console.log(JSON.stringify(posts[0], null, 4));
     res.render('list', {
         locals: {
             posts
@@ -93,9 +92,18 @@ app.post('/post/:id/comment', async (req, res) => {
 
     const comment = await Comment.create({
         content,
-        userId,
-        postId: id
+        // userId,
+        // postId: id
     });
+    // These dont' work either
+    await comment.setUser(userId);
+    await comment.setPost(id);
+    await comment.save();
+
+    // Neither do these.
+    // comment.UserId = userId;
+    // comment.PostId = id;
+    // await comment.save();
     res.redirect('/list');
 });
 

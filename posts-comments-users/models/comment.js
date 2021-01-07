@@ -20,17 +20,19 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Comment.init({
-    content: DataTypes.STRING,
-      postId: {
-          type: DataTypes.INTEGER,
-          references: 'Post',
-          key: 'id'
-      },
-      userId: {
-          type: DataTypes.INTEGER,
-          references: 'User',
-          key: 'id'
-      }
+      content: DataTypes.STRING,
+      // Lachlan says this is not necessary,
+      // since we've got the same info in the associate() method.
+      // postId: {
+      //     type: DataTypes.INTEGER,
+      //     references: 'Post',
+      //     key: 'id'
+      // },
+      // userId: {
+      //     type: DataTypes.INTEGER,
+      //     references: 'User',
+      //     key: 'id'
+      // }
   }, {
     sequelize,
     modelName: 'Comment',
