@@ -38,11 +38,16 @@ app.get('/list', async (req, res) => {
         // This works, only because I removed the `belongsToMany()` calls
         include: [{
             model: Comment,
-            attributes: ['content'],
-            include: User
+            attributes: ['content', 'createdAt'],
+            include: User,
+            //order: [
+            //     // ['Comment', 'id', 'asc']
+            //     // ['Comments', 'createdAt', 'desc']
+            //]
         }],
         order: [
-            ['createdAt', 'desc']
+            ['createdAt', 'desc'],
+            ['Comments', 'createdAt', 'asc']
         ]
     });
 

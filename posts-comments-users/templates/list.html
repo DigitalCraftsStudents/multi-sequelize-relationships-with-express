@@ -5,7 +5,7 @@ ${header}
 ${posts.map(p => `
 <div>
   <h2>${p.title}</h2>
-  <p>${
+  <p class="post">${
     p.content.startsWith('/uploads/') ?
     `<img src="${p.content}">`: p.content
     }</p>
