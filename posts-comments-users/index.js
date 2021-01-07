@@ -5,6 +5,12 @@ const express = require('express');
 const morgan = require('morgan');
 const es6Renderer = require('express-es6-template-engine');
 
+const UPLOAD_URL = '/uploads/';
+
+const multer = require('multer');
+const upload = multer({ dest: 'public' + UPLOAD_URL });
+
+
 const { layout } = require('./utils');
 const { Post, Comment, User } = require('./models');
 
@@ -21,6 +27,8 @@ app.set('views', 'templates');
 app.set('view engine', 'html');
 
 app.use(logger);
+
+app.use(express.static('public'));
 
 // Parse any form data from POST requests
 app.use(express.urlencoded({extended: true}));
@@ -78,11 +86,17 @@ app.get('/post/new', async (req, res) => {
     })
 });
 
-app.post('/post/new', async (req, res) => {
-    const { userId, content, title } = req.body;
+app.post('/post/new', upload.single('content'), async (req, res) => {
+    // req.file is the `avatar` file
+    const { file } = req;
+    console.log('========== filename =========');
+    console.log(file.destination, file.filename);
+
+    
+    const { userId, title } = req.body;
     const post = await Post.create({
         title,
-        content
+        content: UPLOAD_URL + file.filename
     });
     // Not tracking which user created the post.
     // In a real app, we would.
