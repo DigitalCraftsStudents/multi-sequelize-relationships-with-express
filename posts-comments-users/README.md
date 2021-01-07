@@ -125,12 +125,12 @@ app.post('/post/new', upload.single('content'), async (req, res) => {
     // req.file is the `content` file
     const { file } = req;
     console.log('========== filename =========');
-    console.log(file.destination, file.filename);
+    console.log(file.destination + file.filename); // path in project
     
     const { userId, title } = req.body;
     const post = await Post.create({
         title,
-        content: file.destination + file.filename
+        content: '/uploads/' + file.filename      // static URL
     });
     // Not tracking which user created the post.
     // In a real app, we would.

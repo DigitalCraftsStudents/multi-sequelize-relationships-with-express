@@ -87,11 +87,10 @@ app.get('/post/new', async (req, res) => {
 });
 
 app.post('/post/new', upload.single('content'), async (req, res) => {
-    // req.file is the `avatar` file
+    // req.file is the `content` file
     const { file } = req;
     console.log('========== filename =========');
     console.log(file.destination, file.filename);
-
     
     const { userId, title } = req.body;
     const post = await Post.create({
