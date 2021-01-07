@@ -5,9 +5,12 @@ ${header}
 ${posts.map(p => `
 <div>
   <h2>${p.title}</h2>
-  <p class="post">${
+  <a href="#" class="toggler" data-target="${p.id}">Toggle</a>
+  <p id="${p.id}" class="post">${
     p.content.startsWith('/uploads/') ?
-    `<img src="${p.content}">`: p.content
+          `<img src="${p.content}">`
+          : 
+          p.content
     }</p>
   <ul>
     ${p.Comments ?

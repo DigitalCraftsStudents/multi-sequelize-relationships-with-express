@@ -50,27 +50,6 @@ app.get('/list', async (req, res) => {
             ['Comments', 'createdAt', 'asc']
         ]
     });
-
-    // cheating because `include` doesn't do what I expect
-    // for (let p of posts) {
-        // p.Comments = await Comment.findAll({
-            // where: {
-                // postId: p.id,
-            // },
-            // include: User,            
-            // order: [
-                // ['createdAt', 'asc']
-            // ]
-        // });
-
-        // This doesn't work, magic method returns null
-        // for (let c of p.Comments) {
-            // console.log('attaching user to comment...');            
-            // c.User = await c.getUser();
-            // console.log(JSON.stringify(c.User, null, 4));
-        // }
-    // }
-    
     
     // print one
     console.log(JSON.stringify(posts[0], null, 4));

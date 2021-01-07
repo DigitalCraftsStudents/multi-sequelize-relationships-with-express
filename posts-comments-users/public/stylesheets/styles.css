@@ -1,0 +1,12 @@
+
+.post {
+    max-width: 80%;
+}
+
+.post img {
+    width: 100%;
+}
+
+.hidden {
+    display: none;
+}
