@@ -13,7 +13,7 @@ ${header}
     As user:
     <select name="userId">
       ${users.map(u => `
-      <option value="${u.id}">${u.name}</option>
+        <option value="${u.id}">${u.name}</option>
       `).join('')}
     </select>
   </label>
@@ -21,3 +21,4 @@ ${header}
   <input type="submit" value="submit">
 </form>
 
+${footer}

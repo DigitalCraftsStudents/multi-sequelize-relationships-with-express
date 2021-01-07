@@ -8,10 +8,10 @@ ${posts.map(p => `
   <p>${p.content}</p>
   <ul>
     ${p.Comments ?
-    p.Comments.map(c => `
-    <li>${c.User ? c.User.name : ''}: ${c.content}</li>
-    `).join('')
-    : ''}
+      p.Comments.map(c => `
+        <li>${c.User.name}: ${c.content}</li>
+      `).join('')
+      : ''}
   </ul>
   <a href="/post/${p.id}/comment">comment</a>
 </div>

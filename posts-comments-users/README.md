@@ -10,11 +10,12 @@ That means that the Comment will have a `userId` field and a `postId` field.
 
 ```sh
 npx sequelize model:generate --name Post --attributes 'title:string, content:string'
-npx sequelize model:generate --name Comment --attributes 'content:string, postId:integer, userId:integer'
 npx sequelize model:generate --name User --attributes 'name:string'
+
+npx sequelize model:generate --name Comment --attributes 'content:string, postId:integer, userId:integer'
 ```
 
-## Set the foreign keys
+## Setup the foreign keys (optional if you refer to the foreign keys in your `associate()` function)
 
 In `models/comment.js`:
 
@@ -57,10 +58,15 @@ In `models/comment.js`:
 
 ```js
     static associate(models) {
-        User.belongsToMany(models.Post, {
-            through: 'Comment',
-            foreignKey: 'userId'
-        });
+        // NOOOOO. Do not call belongsToMany()
+        // When getting all comments for a Post
+        // it only pulled one Comment per User.
+        // If a User made two Comments on a Post,
+        // it only showed the most recent.
+        // User.belongsToMany(models.Post, {
+        //     through: 'Comment',
+        //     foreignKey: 'userId'
+        // });
         User.hasMany(models.Comment, {
             foreignKey: 'userId'
         });
@@ -71,10 +77,12 @@ In `models/comment.js`:
 
 ```js
     static associate(models) {
-        Post.belongsToMany(models.User, {
-            through: 'Comment',
-            foreignKey: 'postId'
-        });
+        // NOOOOO. Do not call belongsToMany()
+        // See note above.
+        // Post.belongsToMany(models.User, {
+        //     through: 'Comment',
+        //     foreignKey: 'postId'
+        // });
         Post.hasMany(models.Comment, {
             foreignKey: 'postId'
         });

@@ -14,7 +14,7 @@ const server = http.createServer(app);
 const PORT = process.env.PORT || 3000;
 const HOST = '0.0.0.0';
 
-const logger = morgan('tiny');
+const logger = morgan('dev');
 
 app.engine('html', es6Renderer);
 app.set('views', 'templates');
@@ -24,6 +24,17 @@ app.use(logger);
 
 // Parse any form data from POST requests
 app.use(express.urlencoded({extended: true}));
+
+// For starting out UI-first:
+// - express
+// - template engine
+// - express.static (for CSS files, images, etc.)
+// - just enough routes to show your HTML files.
+//app.use(express.static('public'));
+app.get('/list2', (req, res) => {
+
+    res.render('list2');
+});
 
 app.get('/list', async (req, res) => {
     let posts = await Post.findAll({
@@ -39,13 +50,20 @@ app.get('/list', async (req, res) => {
 
     // cheating because `include` doesn't do what I expect
     for (let p of posts) {
+        // manually add the comments
+        // from the database.
         p.Comments = await Comment.findAll({
             where: {
-                postId: p.id,
+                postId: p.id, // where Comment.postId == p.id
+                              // (p is the Post I'm looping over)
             },
-            include: User,            
-            order: [
-                ['createdAt', 'asc']
+            include: User,    // Retreive the User
+                              // that made this Comment
+
+
+            order: [                    // Put the Comments
+                ['createdAt', 'asc']    // in the order they were
+                                        // created
             ]
         });
 
@@ -70,12 +88,12 @@ app.get('/list', async (req, res) => {
 });
 
 app.get('/post/:id/comment', async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.params; // What post are they commenting on?
     
     const post = await Post.findByPk(id);
     const users = await User.findAll({
         order: [
-            ['name', 'asc']
+            ['name', 'asc'] // alphabetical order by name
         ]
     })
 
