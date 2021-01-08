@@ -27,7 +27,8 @@ function sendDelete(event) {
     const url = `/comment/${id}`;
     // Promise chain for making request and handling response
     fetch(url, {
-        method: 'delete'
+        method: 'delete',
+        // body: JSON.stringify(data)    // if you need to send data to backend
     })
     .then(r => r.json()) // take the response, convert to JSON object
     .then(data => {
