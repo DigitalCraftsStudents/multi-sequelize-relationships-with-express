@@ -15,7 +15,10 @@ ${posts.map(p => `
   <ul>
     ${p.Comments ?
     p.Comments.map(c => `
-    <li>${c.User ? c.User.name : ''}: ${c.content}</li>
+    <li data-comment-id="${c.id}">
+      ${c.User ? c.User.name : ''}: ${c.content}
+      <button class="delete-comment" data-comment-target="${c.id}">delete</button>
+    </li>
     `).join('')
     : ''}
   </ul>
@@ -24,4 +27,5 @@ ${posts.map(p => `
 <hr>
 `).join('')}
 
+<script src="/scripts/comment-delete.js"></script>
 ${footer}

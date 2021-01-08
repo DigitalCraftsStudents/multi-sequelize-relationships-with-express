@@ -38,7 +38,7 @@ app.get('/list', async (req, res) => {
         // This works, only because I removed the `belongsToMany()` calls
         include: [{
             model: Comment,
-            attributes: ['content', 'createdAt'],
+            attributes: ['id', 'content', 'createdAt'],
             include: User,
             //order: [
             //     // ['Comment', 'id', 'asc']
@@ -123,6 +123,32 @@ app.post('/post/:id/comment', async (req, res) => {
     // comment.PostId = id;
     // await comment.save();
     res.redirect('/list');
+});
+
+// We're creating an API endpoint in our backend
+// .delete is the name of the HTTP Method
+// that will be on the Request
+app.delete('/comment/:id', async (req, res) => {
+    const { id } = req.params;
+    // Delete the comment with that id
+    console.log('they want to delete comment id ', id);
+    try {
+        const numCommentsDeleted = await Comment.destroy({
+            where: {
+                id
+            }
+        });
+        console.log(numCommentsDeleted);
+        res.json({
+            status: 'success',
+            id
+        });
+    } catch (err) {
+        res.json({
+            status: 'error'
+        });
+    }
+
 });
 
 app.get('/', (req, res) => {
