@@ -133,12 +133,22 @@ app.delete('/comment/:id', async (req, res) => {
     // Delete the comment with that id
     console.log('they want to delete comment id ', id);
     try {
+        // .destroy
         const numCommentsDeleted = await Comment.destroy({
             where: {
-                id
+                id,
+                // To make sure a logged-in User can only
+                // delete their own Comments,
+                // do something like this:
+                //userId: req.session.user.id
             }
         });
         console.log(numCommentsDeleted);
+        // We expect .destroy to delete exactly 1 Comment.
+        // If it's 0 or more than 1, throw an Error.
+        if (numCommentsDeleted !== 1) {
+            throw Error('Bad. No. No good');
+        }
         res.json({
             status: 'success',
             id
