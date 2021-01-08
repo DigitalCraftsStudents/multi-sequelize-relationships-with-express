@@ -3,6 +3,7 @@ Alternate versions on other branches:
 - [No images, but additional tweaks from demo](https://github.com/DigitalCraftsStudents/multi-sequelize-relationships-with-express/tree/demo-tweaks/posts-comments-users)
 - [With Image Upload](https://github.com/DigitalCraftsStudents/multi-sequelize-relationships-with-express/tree/image-upload/posts-comments-users#adding-image-upload)
 - [With DOM Manipulation](https://github.com/DigitalCraftsStudents/multi-sequelize-relationships-with-express/tree/dom-manipulation)
+- [With with fetch to DELETE](https://github.com/DigitalCraftsStudents/multi-sequelize-relationships-with-express/tree/fetch-from-frontend)
 
 
 # Posts, Comments, Users
